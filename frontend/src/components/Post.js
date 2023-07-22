@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./css/Post.css";
 import { Avatar } from "@mui/material";
 import {
@@ -9,8 +9,15 @@ import {
   ShareOutlined,
   MoreHorizOutlined,
 } from "@mui/icons-material";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
+import CloseIcon from "@mui/icons-material/Close";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'
 
 function Post() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+ const  Close = <CloseIcon />;
   return (
     <div className="post">
       <div className="post__info">
@@ -21,7 +28,44 @@ function Post() {
       <div className="post__body">
         <div className="post__question">
         <p>This is Test Question</p>
-        <button className="post__btnAnswer">Answer</button>
+        <button onClick={()=>setIsModalOpen(true)}className="post__btnAnswer">Answer</button>
+        <Modal
+          open={isModalOpen}
+          closeIcon={Close}
+          onClose={() => setIsModalOpen(false)}
+          closeOnEsc
+          center
+          closeOnOverlayClick={false}
+          styles={{
+            overlay: {
+              height: "auto",
+            },
+          }}
+        >
+          <div className="modal__question">
+              <h1>This is test question</h1>
+              <p>
+                asked by  <span className="name">Username</span> on{" "}
+                <span className="name">
+                  Timestemp
+                </span>
+              </p>
+            </div>
+            <div className="modal__answer">
+            <ReactQuill  placeholder="Enter your answer"/>
+              
+            </div>
+            <div className="modal__button">
+              <button className="cancle" onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </button>
+              <button type="submit" className="add">
+                Add Answer
+              </button>
+            </div>
+          
+        </Modal>
+
         </div>         
       </div>
       <div className="post__footer">
