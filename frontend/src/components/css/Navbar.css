@@ -118,6 +118,19 @@
     color: #222;
     background: rgb(214, 214, 214);
   }
+  .navbar-question{
+    border: none;
+    outline: none;
+    /* margin-top: 2px; */
+    margin-left: 8px;
+    background-color: #222;
+    color: white;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 33px;
+    cursor: pointer;
+    width: 50%;
+  }
   
   .modal__title {
     display: flex;
