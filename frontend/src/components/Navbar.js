@@ -11,11 +11,39 @@ import { Modal } from "react-responsive-modal";
 import CloseIcon from "@mui/icons-material/Close";
 import "react-responsive-modal/styles.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import  axios from 'axios';
 
 function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
+    const [question, setQuestion] = useState("");
   const Close = <CloseIcon />;
+
+  const handleSubmit = async () => {
+    if (question !== "") {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const body = {
+        questionName: question,
+        questionUrl: inputUrl,
+        // user: user,
+      };
+      await axios
+        .post("http://localhost:8080/questions", body, config)
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data.message);
+          window.location.href = "/";
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("Error in adding question");
+        });
+    }
+  };
   return (
     <div className="navbar">
       <div className="navbar-content">
@@ -84,6 +112,8 @@ function Navbar() {
           </div>
           <div className="modal__Field">
             <Input
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
               text="text"
               placeholder="Start your question with 'What', 'How', 'Why' etc."
             />
@@ -120,7 +150,7 @@ function Navbar() {
               Cancel
             </button>
 
-            <button className="add" type="submit">
+            <button onClick={handleSubmit}  className="add" type="submit">
               Add
             </button>
           </div>

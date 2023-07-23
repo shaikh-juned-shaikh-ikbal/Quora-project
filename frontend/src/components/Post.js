@@ -12,61 +12,118 @@ import {
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import CloseIcon from "@mui/icons-material/Close";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import ReactTimeAgo from "react-time-ago";
+import axios from "axios";
+import ReactHtmlParser from "html-react-parser";
 
-function Post() {
+function LastSeen({ date }) {
+  return (
+    <div>
+      <ReactTimeAgo date={date} locale="en-US" timeStyle="round" />
+    </div>
+  );
+}
+
+function Post({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
- const  Close = <CloseIcon />;
+  const [answer, setAnswer] = useState("");
+  const Close = <CloseIcon />;
+
+  const handleQuill = (value) => {
+    setAnswer(value);
+  };
+  // console.log(answer);
+
+  const handleSubmit = async () => {
+    if (post?._id && answer !== "") {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const body = {
+        answer: answer,
+        questionId: post?._id,
+        // user: user,
+      };
+      await axios
+        .post("http://localhost:8080/answers", body, config)
+        .then((res) => {
+          console.log(res.data);
+          alert("Answer added succesfully");
+          setIsModalOpen(false);
+          window.location.href = "/";
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
   return (
     <div className="post">
       <div className="post__info">
         <Avatar />
         <h4>Username</h4>
-        <small>Timestep</small>
+        <small>
+          <LastSeen date={post?.createdAt} />
+        </small>
       </div>
+
       <div className="post__body">
         <div className="post__question">
-        <p>This is Test Question</p>
-        <button onClick={()=>setIsModalOpen(true)}className="post__btnAnswer">Answer</button>
-        <Modal
-          open={isModalOpen}
-          closeIcon={Close}
-          onClose={() => setIsModalOpen(false)}
-          closeOnEsc
-          center
-          closeOnOverlayClick={false}
-          styles={{
-            overlay: {
-              height: "auto",
-            },
-          }}
-        >
-          <div className="modal__question">
-              <h1>This is test question</h1>
+          <p>{post?.questionName}</p>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="post__btnAnswer"
+          >
+            Answer
+          </button>
+          <Modal
+            open={isModalOpen}
+            closeIcon={Close}
+            onClose={() => setIsModalOpen(false)}
+            closeOnEsc
+            center
+            closeOnOverlayClick={false}
+            styles={{
+              overlay: {
+                height: "auto",
+              },
+            }}
+          >
+            <div className="modal__question">
+              <h1>{post?.questionName}</h1>
               <p>
-                asked by  <span className="name">Username</span> on{" "}
+                asked by <span className="name">Username</span> on{" "}
                 <span className="name">
-                  Timestemp
+                  {new Date(post?.createdAt).toLocaleString()}
                 </span>
               </p>
             </div>
+
             <div className="modal__answer">
-            <ReactQuill  placeholder="Enter your answer"/>
-              
+              <ReactQuill
+                vlaue={answer}
+                placeholder="Enter your answer"
+                onChange={handleQuill}
+              />
             </div>
+
             <div className="modal__button">
               <button className="cancle" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </button>
-              <button type="submit" className="add">
+              <button type="submit" onClick={handleSubmit} className="add">
                 Add Answer
               </button>
             </div>
-          
-        </Modal>
+          </Modal>
+        </div>
 
-        </div>         
+        {post.questionUrl !== "" && <img src={post.questionUrl} alt="url" />}
       </div>
       <div className="post__footer">
         <div className="post__footerAction">
@@ -88,7 +145,7 @@ function Post() {
           margin: "10px 0",
         }}
       >
-        1 Answer
+        {post?.allAnswers.length} Answer(s)
       </p>
       <div
         style={{
@@ -98,17 +155,22 @@ function Post() {
         }}
         className="post__answer"
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            padding: "10px 5px",
-            borderTop: "1px solid lightgray",
-          }}
-          className="post-answer-container"
-        >
-          <div style={{
+        
+        {post?.allAnswers?.map((_a) => {
+          return(
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                padding: "10px 5px",
+                borderTop: "1px solid lightgray",
+              }}
+              className="post-answer-container"
+            >
+              <div
+                style={{
                   display: "flex",
                   alignItems: "center",
                   marginBottom: "10px",
@@ -116,18 +178,28 @@ function Post() {
                   fontWeight: 600,
                   color: "#888",
                 }}
-           className="post-answered">
-            <Avatar />
-            <div style={{
+                className="post-answered"
+              >
+                <Avatar />
+                <div
+                  style={{
                     margin: "0px 10px",
                   }}
-            className="post-info">
-              <p>username</p>
-              <span>Timestep</span>
+                  className="post-info"
+                >
+                  {/* console.log(_a?.user?.userName) */}
+                  <p>username</p>
+                  <span>
+                    
+                    <LastSeen date={_a?.createdAt} />
+                  </span>
+                </div>
+              </div>
+              <div className="post-answer">{ReactHtmlParser(_a?.answer)}</div>
             </div>
-          </div>
-          <div className="post-answer">This is test Answer</div>
-        </div>
+          </>
+          )
+        })}
       </div>
     </div>
   );
