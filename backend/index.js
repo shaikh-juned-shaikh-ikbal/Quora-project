@@ -39,7 +39,7 @@ const answerRouter = require("./routes/Answer");
 
   //routes
   app.use("/questions", questionRouter);
-//   app.use("/answers", answerRouter);
+  app.use("/answers", answerRouter);
 
 app.get("/", (req, res) => {
     res.send("This api is reserved for quora clone");
