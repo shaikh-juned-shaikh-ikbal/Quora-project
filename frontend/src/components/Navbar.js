@@ -11,13 +11,20 @@ import { Modal } from "react-responsive-modal";
 import CloseIcon from "@mui/icons-material/Close";
 import "react-responsive-modal/styles.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import  axios from 'axios';
+import axios from "axios";
+import { signOut } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../firebase";
+import { logout, selectUser } from "../feature/userSlice";
 
 function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
-    const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState("");
   const Close = <CloseIcon />;
+
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const handleSubmit = async () => {
     if (question !== "") {
@@ -29,7 +36,7 @@ function Navbar() {
       const body = {
         questionName: question,
         questionUrl: inputUrl,
-        // user: user,
+        user: user,
       };
       await axios
         .post("http://localhost:8080/questions", body, config)
@@ -44,13 +51,27 @@ function Navbar() {
         });
     }
   };
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure to logout ?")) {
+      signOut(auth)
+        .then(() => {
+          dispatch(logout());
+          console.log("Logged out");
+        })
+        .catch(() => {
+          console.log("error in logout");
+        });
+    }
+  };
+
   return (
     <div className="navbar">
       <div className="navbar-content">
         <div className="navbar__logo">
           <img
-            // src='././public/logo.png'
-            src="https://cdn-icons-png.flaticon.com/512/4096/4096393.png"
+           
+            src="https://video-public.canva.com/VAD8lt3jPyI/v/ec7205f25c.gif"
             alt="logo"
           />
         </div>
@@ -76,7 +97,9 @@ function Navbar() {
           <input type="text" placeholder="search questions" />
         </div>
         <div className="navbar__Rem">
-          <Avatar />
+          <span onClick={handleLogout}>
+            <Avatar src={user?.photo} />
+          </span>
         </div>
         <button
           className="navbar-question"
@@ -103,7 +126,7 @@ function Navbar() {
             <h5>Share Link</h5>
           </div>
           <div className="modal__info">
-            <Avatar className="avatar" />
+            <Avatar className="avatar" src={user?.photo} />
             <div className="modal__scope">
               <PeopleAltOutlinedIcon />
               <p>Public</p>
@@ -112,8 +135,8 @@ function Navbar() {
           </div>
           <div className="modal__Field">
             <Input
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
               text="text"
               placeholder="Start your question with 'What', 'How', 'Why' etc."
             />
@@ -135,14 +158,16 @@ function Navbar() {
                 onChange={(e) => setInputUrl(e.target.value)}
                 placeholder="Optional : include a link that gives context."
               />
-              {
-                inputUrl !== "" && <img style={{
-                  height: "40vh",
-                  objectFit: "contain",
-                }} src={inputUrl}
-                 alt="Displayimage" /> 
-
-              }
+              {inputUrl !== "" && (
+                <img
+                  style={{
+                    height: "40vh",
+                    objectFit: "contain",
+                  }}
+                  src={inputUrl}
+                  alt="Displayimage"
+                />
+              )}
             </div>
           </div>
           <div className="modal__buttons">
@@ -150,7 +175,7 @@ function Navbar() {
               Cancel
             </button>
 
-            <button onClick={handleSubmit}  className="add" type="submit">
+            <button onClick={handleSubmit} className="add" type="submit">
               Add
             </button>
           </div>
