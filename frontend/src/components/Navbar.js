@@ -39,7 +39,7 @@ function Navbar() {
         user: user,
       };
       await axios
-        .post("http://localhost:8080/questions", body, config)
+        .post("https://quora-2-mern.onrender.com/questions", body, config)
         .then((res) => {
           console.log(res.data);
           alert(res.data.message);

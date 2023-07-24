@@ -11,7 +11,7 @@ function Feed() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/questions")
+      .get("https://quora-2-mern.onrender.com/questions")
       .then((res) => {
         console.log(res.data.reverse());
         setPosts(res.data);

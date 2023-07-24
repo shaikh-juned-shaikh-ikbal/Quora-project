@@ -52,7 +52,7 @@ function Post({ post }) {
         user: user,
       };
       await axios
-        .post("http://localhost:8080/answers", body, config)
+        .post("https://quora-2-mern.onrender.com/answers", body, config)
         .then((res) => {
           console.log(res.data);
           alert("Answer added succesfully");
