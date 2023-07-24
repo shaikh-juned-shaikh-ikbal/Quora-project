@@ -1,4 +1,7 @@
 .login-container {
+  background: url("https://qph.cf2.quoracdn.net/main-qimg-b5faebde65208b4e09af0a85b3893ddd-lq") no-repeat ;
+  background-attachment: fixed;
+  background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6,11 +9,38 @@
     width: 100vw;
     box-sizing: border-box;
   }
+  .head{
+    color: rgb(163, 59, 59);
+    margin: 5px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: bolder;
+  font-size: 64px; /* Adjust the font size as needed */
+      font-weight: bold;
+      /* color: #1e4468; Adjust the color to match Quora's theme */
+      line-height: 1.2;
+  }
+
+  .para{
+    margin:10px 25px ;
+    text-align: justify;
+    font-size: 20px;
+    font-weight: bold;
+  }
   
+  .love{
+    margin:10px 5px ;
+  }
+  .name{
+    color: rgb(63, 40, 85);
+    font-style: italic;
+  }
   .login-content {
+    background-color: #ffffffe1;
     display: flex;
     align-items: center;
     flex-direction: column;
+    /* width: 500px; */
+    /* height: 500px; */
   }
   
   .login-content > img {
@@ -22,7 +52,7 @@
   .login-content > button {
     padding: 10px;
     margin: 50px 0px;
-    background-color: #000;
+    background-color: #113aaa;
     color: #fff;
     outline: none;
     border: none;

@@ -47,10 +47,10 @@
     margin-left: auto;
     cursor: pointer;
     padding: 7px;
-    background-color: #222;
+    background-color:#c03232;
     outline: none;
     border: none;
-    color: lightgray;
+    color: rgb(245, 243, 243);
     font-weight: 300;
     font-size: 14px;
     border-radius: 5px;
@@ -188,7 +188,7 @@
     border: none;
     outline: none;
     margin-top: 5px;
-    background-color: #222;
+    background-color: #c03232;
     color: white;
     font-weight: 700;
     padding: 10px;
