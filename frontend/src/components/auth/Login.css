@@ -8,6 +8,7 @@
     height: 100vh;
     width: 100vw;
     box-sizing: border-box;
+    
   }
   .head{
     color: rgb(163, 59, 59);
@@ -29,11 +30,21 @@
   
   .love{
     margin:10px 5px ;
+    letter-spacing: 1.1px;
   }
   .name{
     color: rgb(63, 40, 85);
     font-style: italic;
   }
+
+.beta{
+  margin-bottom: 2px;
+  color: rgba(122, 122, 129, 0.822);
+}
+.beta2{
+  margin-bottom: 12px;
+  color: rgba(118, 118, 119, 0.822);
+}
   .login-content {
     background-color: #ffffffe1;
     display: flex;
@@ -41,6 +52,7 @@
     flex-direction: column;
     /* width: 500px; */
     /* height: 500px; */
+    border-radius: 10px;
   }
   
   .login-content > img {
@@ -49,7 +61,7 @@
     margin: 20px;
   }
   
-  .login-content > button {
+  /* .login-content > button {
     padding: 10px;
     margin: 50px 0px;
     background-color: #113aaa;
@@ -60,4 +72,4 @@
     letter-spacing: 1.1px;
     font-family: monospace;
     cursor: pointer;
-  }
+  } */
