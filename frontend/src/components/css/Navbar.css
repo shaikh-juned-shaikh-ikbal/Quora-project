@@ -244,3 +244,7 @@
       display: none;
     }
   }
+
+  .logout{
+    margin-left: 10px;
+  }
